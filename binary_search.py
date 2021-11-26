@@ -9,31 +9,47 @@ class Solution:
         if nums[-1] < 0 and nums[-1] > target:
             return -1
         
-        subarray = deepcopy(nums)
+        upper_bound = len(nums) -1
+        lower_bound = 0
+        middle_index = (upper_bound + lower_bound) // 2
         
         while True:
-            
-            subarray_len = len(subarray)
-            middle_index = int(subarray_len / 2)
-            
-            
-            if subarray[middle_index] == target:
+            middle_index = (upper_bound + lower_bound) // 2
+            if nums[middle_index] == target:
                 return middle_index
 
-            if subarray[middle_index] > target:
-                subarray = deepcopy(subarray[0 : middle_index])
-                if len(subarray)==1:
-                    return -1
+            if nums[middle_index] > target:
+                upper_bound = middle_index
+                if upper_bound == lower_bound: 
+                    return -1   
+
+                if upper_bound - lower_bound == 1:
+                    if nums[upper_bound] == target:
+                        return upper_bound
+                    if nums[lower_bound] == target:
+                        return lower_bound  
+                    else:
+                        return -1           
                 continue
                 
-            if subarray[middle_index] < target:
-                subarray = deepcopy(subarray[middle_index : ])
-                if len(subarray)==1:
-                    return -1
+            if nums[middle_index] < target:
+                lower_bound = middle_index
+                if upper_bound == lower_bound: 
+                    return -1  
+
+                if upper_bound - lower_bound == 1:
+                    if nums[upper_bound] == target:
+                        return upper_bound
+                    elif nums[lower_bound] == target:
+                        return lower_bound
+                    else:
+                        return -1
+
+
                 continue
 
 if __name__ == '__main__':
-    case = [-1,0,3,5,9,12]
-    target = 9
+    case = [-1,0,5]
+    target = -1
     s = Solution()
     print(s.search(nums=case, target=target))
